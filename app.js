@@ -66,6 +66,28 @@ app.post('/api/users', (req, res) => {
   );
 });
 
+
+app.put('/api/users/:id', (req, res) => {
+  // We get the ID from the url path :
+  const userId = req.params.id;
+  // We get the new attribute values for the user from req.body
+  const userPropsToUpdate = req.body;
+  // We send a UPDATE query to the DB
+  connection.query(
+    'UPDATE users SET ? WHERE id = ?',
+    [userPropsToUpdate, userId],
+    (err) => {
+      // Once the DB operation is over, we can respond to the HTTP request
+      if (err) {
+        console.log(err);
+        res.status(500).send('Error updating a user');
+      } else {
+        res.status(200).send('User updated successfully 🎉');
+      }
+    }
+  );
+});
+
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
 });
