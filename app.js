@@ -15,6 +15,8 @@ connection.connect((err) => {
 
 app.use(express.json())
 
+//GET METHOD
+
 app.get('/api/movies', (req, res) => {
   connection.query('SELECT * FROM movies', (err, result) => {
     if (err) {
@@ -35,6 +37,9 @@ app.get('/api/users', (req, res) => {
     }
   });
 });
+
+
+//POST METHOD
 
 app.post('/api/movies', (req, res) => {
   const { title, director, year, color, duration } = req.body;
@@ -66,6 +71,7 @@ app.post('/api/users', (req, res) => {
   );
 });
 
+//PUT METHOD
 
 app.put('/api/users/:id', (req, res) => {
   // We get the ID from the url path :
@@ -87,6 +93,29 @@ app.put('/api/users/:id', (req, res) => {
     }
   );
 });
+
+
+
+app.put('/api/movies/:id', (req, res) => {
+  
+  const movieId = req.params.id;
+  const moviePropsToUpdate = req.body;
+
+  connection.query(
+    'UPDATE movies SET ? WHERE id = ?',
+    [moviePropsToUpdate, movieId],
+    (err) => {
+      if (err) {
+        console.log(err);
+        res.status(500).send('Error updating a movie');
+      } else {
+        res.status(200).send('Movie updated successfully 🎉');
+      }
+    }
+  );
+});
+
+
 
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
