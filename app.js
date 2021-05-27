@@ -115,7 +115,39 @@ app.put('/api/movies/:id', (req, res) => {
   );
 });
 
+//DELETE METHOD
 
+app.delete('/api/users/:id', (req, res) => {
+  const userId = req.params.id;
+  connection.query(
+    'DELETE FROM users WHERE id = ?',
+    [userId],
+    (err, results) => {
+      if (err) {
+        console.log(err);
+        res.status(500).send('😱 Error deleting an user');
+      } else {
+        res.status(200).send('🎉 User deleted!');
+      }
+    }
+  );
+});
+
+app.delete('/api/movies/:id', (req, res) => {
+  const movieId = req.params.id;
+  connection.query(
+    'DELETE FROM movies WHERE id = ?',
+    [movieId],
+    (err, results) => {
+      if (err) {
+        console.log(err);
+        res.status(500).send('😱 Error deleting an user');
+      } else {
+        res.status(200).send('🎉 User deleted!');
+      }
+    }
+  );
+});
 
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
